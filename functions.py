@@ -103,7 +103,7 @@ def summary_generator(sentence_list: list[str], freq_table: dict[str, int]) -> s
     sentence. If a sentence's value is above the threshold, it is included in
     the summary.
     """
-    summary = 'Summary: \n'
+    summary = ''
     value_table = create_value_table(sentence_list, freq_table)
     threshold = value_threshold(value_table)
 
@@ -158,7 +158,7 @@ def value_threshold(value_table: dict[str, float]):
 def find_scary_phrases(sentence_list: list[str], scary_words: list[str]) -> str:
     """Find and return the 'scary words' in a term of service
     """
-    key_points = 'Potential Red Flags & Points of Importance: \n'
+    key_points = ''
     num = 1
     for sentence in sentence_list:
         for phrase in scary_words:
@@ -167,6 +167,6 @@ def find_scary_phrases(sentence_list: list[str], scary_words: list[str]) -> str:
                 key_points += str(num) + ". " + sentence + ' \n \n'
                 num += 1
     # if there weren't any of the phrases found, print there was no red flags.
-    if key_points == 'Potential Red Flags & Points of Importance: \n':
+    if key_points == '':
         return "No Red Flags Found"
     return key_points
