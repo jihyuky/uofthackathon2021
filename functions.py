@@ -85,13 +85,13 @@ def create_sentence_list(terms: str) -> list[str]:
     # Remove the headings from the sentence if it contains it
     for sentence in sentence_list_bad:
         if "\n" in sentence and sentence.split('\n')[1] != '':
-            if len(sentence.split('\n')[1]) > 40 and sentence.split('\n')[1][-1] not in punct:
+            if len(sentence.split('\n')[1]) > 50 and sentence.split('\n')[1][-1] not in punct:
                 sentence_list_good.append(sentence.split('\n')[1] + ".")
-            elif len(sentence.split('\n')[1]) > 40 and sentence.split('\n')[1][-1] in punct:
+            elif len(sentence.split('\n')[1]) > 50 and sentence.split('\n')[1][-1] in punct:
                 sentence_list_good.append(sentence.split('\n')[1])
-        elif len(sentence) > 40 and sentence[-1] not in punct:
+        elif len(sentence) > 50 and sentence[-1] not in punct:
             sentence_list_good.append(sentence + ".")
-        elif len(sentence) > 40 and sentence[-1] in punct:
+        elif len(sentence) > 50 and sentence[-1] in punct:
             sentence_list_good.append(sentence)
 
     return sentence_list_good
@@ -126,7 +126,7 @@ def create_value_table(sentence_list: list[str], freq_table: dict[str, float]) -
         length = len(sent)
         # Increase the value of the sentence by the word's frequency
         for word in freq_table:
-            if word in sent[:25].lower():
+            if word in sent[:50].lower():
                 value += freq_table[word]
         # Divide by the length of the sentence
         value = value / length
