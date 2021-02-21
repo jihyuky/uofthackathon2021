@@ -62,11 +62,11 @@ def create_freq_table(terms: str) -> dict[str, int]:
 
             # Add frequency if it is already in the dictionary
             elif word in fr_table:
-                fr_table[word] += 3
+                fr_table[word] += 2
 
             # Add the word as a new key if it does not exist in the dictionary
             else:
-                fr_table[word] = 3
+                fr_table[word] = 2
 
     return fr_table
 
@@ -78,11 +78,20 @@ def create_sentence_list(terms: str) -> list[str]:
 
     sentence_list_good = []
 
+    punct = ['.', ',', '!', '?', ';', ':', '"', "'", '*', '(', ')', '[', ']', '{', '}', '/', '$'
+                                                                                             '%',
+             ' ^', '``', """''"""]
+
     # Remove the headings from the sentence if it contains it
     for sentence in sentence_list_bad:
         if "\n" in sentence and sentence.split('\n')[1] != '':
-            sentence_list_good.append(sentence.split('\n')[1])
-        else:
+            if len(sentence.split('\n')[1]) > 40 and sentence.split('\n')[1][-1] not in punct:
+                sentence_list_good.append(sentence.split('\n')[1] + ".")
+            elif len(sentence.split('\n')[1]) > 40 and sentence.split('\n')[1][-1] in punct:
+                sentence_list_good.append(sentence.split('\n')[1])
+        elif len(sentence) > 40 and sentence[-1] not in punct:
+            sentence_list_good.append(sentence + ".")
+        elif len(sentence) > 40 and sentence[-1] in punct:
             sentence_list_good.append(sentence)
 
     return sentence_list_good
@@ -117,7 +126,7 @@ def create_value_table(sentence_list: list[str], freq_table: dict[str, float]) -
         length = len(sent)
         # Increase the value of the sentence by the word's frequency
         for word in freq_table:
-            if word in sent[15:].lower():
+            if word in sent[:25].lower():
                 value += freq_table[word]
         # Divide by the length of the sentence
         value = value / length
@@ -141,7 +150,7 @@ def value_threshold(value_table: dict[str, float]):
 
     # Deciding what the threshold will be. Modify this for different results.
     avg = total_value / len(all_value)
-    threshold = max(1.6 * avg, all_value[-11])
+    threshold = max(1.45 * avg, all_value[-13])
 
     return threshold
 
